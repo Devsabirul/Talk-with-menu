@@ -1,330 +1,932 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restaurant AI Chatbot</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: #f3f6fa;
-      font-family: Arial, sans-serif;
-      height: 100vh;
-      overflow: hidden;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#153c2b">
+<title>Restaurant | AI Waiter</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap');
+:root {
+    --green: #1b7049;
+    --dark: #153c2b;
+    --cream: #f8faf6;
+    --text: #26382c;
+    --muted: #89958c;
+    --border: #e9eee8;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: #edf2ec;
+}
+/* MAIN LAYOUT */
+.app {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container {
+    width: 100%;
+    max-width: 1150px;
+    height: 100%;
+    max-height: 850px;
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 20px 70px rgba(20,50,30,.09);
+}
+/* SIDEBAR */
+.sidebar {
+    background:
+        radial-gradient(circle at 90% 10%, #2c7951 0%, transparent 35%),
+        linear-gradient(150deg, #102f21, #1a5939);
+    color: white;
+    padding: 32px 27px;
+    display: flex;
+    flex-direction: column;
+}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.brand-icon {
+    width: 46px;
+    height: 46px;
+    background: #ffffff20;
+    border: 1px solid #ffffff25;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+}
+.brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+}
+.brand-sub {
+    color: #b9d8c5;
+    font-size: 10px;
+    margin-top: 3px;
+    letter-spacing: 1px;
+}
+.hero {
+    margin-top: 65px;
+}
+.eyebrow {
+    color: #b9d8c5;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+.hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 43px;
+    line-height: 1.15;
+    font-weight: 500;
+    margin-top: 18px;
+}
+.hero p {
+    font-size: 13px;
+    line-height: 1.9;
+    color: #d1e1d5;
+    margin-top: 18px;
+}
+.sidebar-divider {
+    height: 1px;
+    background: #ffffff25;
+    margin: 35px 0;
+}
+.sidebar-heading {
+    color: #b9d8c5;
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 22px;
+}
+.feature {
+    display: flex;
+    gap: 13px;
+    margin-bottom: 22px;
+    align-items: center;
+}
+.feature-icon {
+    width: 39px;
+    height: 39px;
+    background: #ffffff18;
+    border: 1px solid #ffffff20;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.feature strong {
+    font-size: 12px;
+}
+.feature p {
+    font-size: 10px;
+    color: #c2d9ca;
+    margin-top: 4px;
+}
+.sidebar-bottom {
+    margin-top: auto;
+}
+.online-badge {
+    display: inline-flex;
+    gap: 9px;
+    align-items: center;
+    border: 1px solid #ffffff35;
+    padding: 10px 14px;
+    border-radius: 30px;
+    font-size: 11px;
+}
+.online-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #76e5a1;
+}
+/* CHAT AREA */
+.chat-area {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: white;
+}
+/* HEADER */
+.header {
+    height: 80px;
+    min-height: 80px;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 27px;
+    gap: 10px;
+}
+.restaurant-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.restaurant-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 15px;
+    background: #edf5ee;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+.restaurant-name {
+    font-size: 14px;
+    font-weight: 800;
+}
+.restaurant-status {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 5px;
+}
+.status-dot {
+    color: #28a366;
+}
+.ai-label {
+    background: #eff6ef;
+    color: var(--green);
+    padding: 9px 13px;
+    border-radius: 20px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+/* CHAT MESSAGES */
+.messages {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 28px;
+    background: #fcfdfb;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #dbe5dc transparent;
+}
+.messages::-webkit-scrollbar {
+    width: 5px;
+}
+.messages::-webkit-scrollbar-thumb {
+    background: #dbe5dc;
+    border-radius: 10px;
+}
+.date-label {
+    text-align: center;
+    color: #a0aaa1;
+    font-size: 9px;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+.message-row {
+    display: flex;
+    gap: 11px;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    width: 100%;
+}
+.message-row.user {
+    justify-content: flex-end;
+}
+.avatar {
+    width: 34px;
+    height: 34px;
+    background: #edf5ee;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+}
+.message-content {
+    max-width: 78%;
+    min-width: 0;
+}
+.sender {
+    font-size: 10px;
+    font-weight: 700;
+    color: #89958b;
+    margin: 0 0 7px 4px;
+}
+.bubble {
+    background: #f0f5f0;
+    color: #34463a;
+    padding: 14px 17px;
+    border-radius: 5px 17px 17px 17px;
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+.user .bubble {
+    background: var(--green);
+    color: white;
+    border-radius: 17px 5px 17px 17px;
+}
+.time {
+    font-size: 9px;
+    color: #a4aea5;
+    margin-top: 7px;
+    text-align: right;
+}
+/* TYPING */
+.typing-bubble {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 17px;
+}
+.typing-bubble span {
+    width: 6px;
+    height: 6px;
+    background: #84988a;
+    border-radius: 50%;
+    animation: typing 1s infinite;
+}
+.typing-bubble span:nth-child(2) {
+    animation-delay: .15s;
+}
+.typing-bubble span:nth-child(3) {
+    animation-delay: .3s;
+}
+@keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-5px); }
+}
+/* QUICK QUESTIONS */
+.suggestions {
+    flex-shrink: 0;
+    padding: 0 27px 16px;
+    background: #fcfdfb;
+}
+.suggestion-title {
+    color: #929e94;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    margin-bottom: 11px;
+}
+.suggestion-list {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+.suggestion-list::-webkit-scrollbar {
+    display: none;
+}
+.suggestion {
+    flex-shrink: 0;
+    border: 1px solid #e0e9e0;
+    background: white;
+    color: #46634e;
+    padding: 10px 14px;
+    border-radius: 25px;
+    font-family: inherit;
+    font-size: 10px;
+    cursor: pointer;
+}
+.suggestion:hover {
+    background: #edf6ed;
+}
+/* INPUT AREA */
+.input-area {
+    flex-shrink: 0;
+    padding: 15px 27px 18px;
+    border-top: 1px solid var(--border);
+    background: white;
+}
+.input-box {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    background: #f7f9f7;
+    border: 1px solid #e2eae2;
+    border-radius: 17px;
+    padding: 8px 9px 8px 16px;
+}
+.input-box:focus-within {
+    border-color: #91b99a;
+    box-shadow: 0 0 0 3px #1b704910;
+}
+textarea {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    resize: none;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 16px;
+    color: var(--text);
+    padding: 11px 0;
+    line-height: 1.5;
+    max-height: 110px;
+    min-height: 40px;
+    overflow-y: auto;
+}
+textarea::placeholder {
+    color: #a0aaa2;
+}
+.send-btn {
+    width: 43px;
+    height: 43px;
+    border: none;
+    border-radius: 13px;
+    background: var(--green);
+    color: white;
+    font-size: 19px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.send-btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+.footer-note {
+    text-align: center;
+    color: #a1aaa3;
+    font-size: 9px;
+    margin-top: 10px;
+}
+/* TABLET */
+@media(max-width: 850px) {
+    .container {
+        grid-template-columns: 230px minmax(0, 1fr);
     }
-    .chat-wrapper {
-      max-width: 850px;
-      height: 100vh;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      background: white;
-      box-shadow: 0 0 30px rgba(0,0,0,.06);
+    .sidebar {
+        padding: 25px 20px;
     }
-    .chat-header {
-      padding: 20px 25px;
-      background: #172033;
-      color: white;
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    .hero h1 {
+        font-size: 35px;
+    }
+    .messages {
+        padding: 22px;
+    }
+}
+/* MOBILE */
+@media(max-width: 600px) {
+    html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    .app {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        padding: 0;
+        display: block;
+    }
+    .container {
+        width: 100%;
+        height: 100%;
+        max-height: none;
+        display: flex;
+        flex-direction: column;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .sidebar {
+        display: none;
+    }
+    .chat-area {
+        flex: 1;
+        height: 0;
+        min-height: 0;
+        width: 100%;
+    }
+    .header {
+        height: 65px;
+        min-height: 65px;
+        padding: 0 15px;
     }
     .restaurant-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: #15945f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
+        width: 40px;
+        height: 40px;
     }
-    .restaurant-title {
-      font-size: 19px;
-      font-weight: 700;
-      margin: 0;
+    .restaurant-name {
+        font-size: 13px;
     }
-    .online-status {
-      font-size: 12px;
-      color: #8ee6bd;
-      margin-top: 4px;
+    .ai-label {
+        font-size: 8px;
+        padding: 8px 10px;
     }
-    .chat-info {
-      margin-left: auto;
-      text-align: right;
-      font-size: 11px;
-      color: #b9c5d5;
-      max-width: 190px;
-      overflow-wrap: anywhere;
+    .messages {
+        flex: 1;
+        min-height: 0;
+        padding: 18px 14px;
     }
-    .chat-body {
-      flex: 1;
-      padding: 25px;
-      overflow-y: auto;
-      background: #f8fafc;
+    .message-content {
+        max-width: 85%;
     }
-    .message-row {
-      display: flex;
-      margin-bottom: 18px;
+    .bubble {
+        font-size: 13px;
+        padding: 12px 14px;
     }
-    .message-row.user {
-      justify-content: flex-end;
+    .suggestions {
+        padding: 10px 14px 12px;
     }
-    .message {
-      max-width: 75%;
-      padding: 13px 16px;
-      border-radius: 13px;
-      font-size: 14px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
+    .suggestion {
+        padding: 10px 13px;
     }
-    .bot .message {
-      background: white;
-      border: 1px solid #e5eaf1;
-      color: #263449;
-      border-top-left-radius: 3px;
-    }
-    .user .message {
-      background: #15945f;
-      color: white;
-      border-top-right-radius: 3px;
-    }
-    .message-time {
-      font-size: 10px;
-      color: #94a3b8;
-      margin-top: 5px;
-    }
-    .chat-footer {
-      padding: 18px 22px;
-      background: white;
-      border-top: 1px solid #e5eaf1;
-    }
-    .input-group {
-      border: 1px solid #dbe2eb;
-      border-radius: 10px;
-      padding: 5px;
-      background: white;
-    }
-    .input-group .form-control {
-      border: 0;
-      box-shadow: none;
-      padding: 12px;
-    }
-    .send-btn {
-      background: #15945f;
-      color: white;
-      border: 0;
-      border-radius: 8px;
-      padding: 0 20px;
-    }
-    .send-btn:hover {
-      background: #107a4e;
-      color: white;
-    }
-    .send-btn:disabled {
-      opacity: .6;
+    .input-area {
+        padding: 10px 12px;
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
     }
     .footer-note {
-      text-align: center;
-      font-size: 11px;
-      color: #94a3b8;
-      margin-top: 10px;
+        font-size: 8px;
     }
-    .typing {
-      color: #64748b;
-      font-size: 13px;
-      padding: 8px 0;
-    }
-    .error-message {
-      background: #fff1f2;
-      border: 1px solid #fecdd3;
-      color: #be123c;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      margin-bottom: 15px;
-    }
-    @media(max-width: 600px) {
-      .chat-header { padding: 15px; }
-      .chat-body { padding: 15px; }
-      .chat-footer { padding: 12px; }
-      .chat-info { display: none; }
-      .message { max-width: 88%; }
-    }
-  </style>
+}
+</style>
 </head>
 <body>
-<div class="chat-wrapper">
-  <header class="chat-header">
-    <div class="restaurant-icon">
-      <i class="bi bi-shop"></i>
+<div class="app" id="app">
+<div class="container">
+<aside class="sidebar">
+    <div class="brand">
+        <div class="brand-icon">🍃</div>
+        <div>
+            <div class="brand-name" id="sidebarRestaurantName">Restaurant</div>
+            <div class="brand-sub">RESTAURANT AI WAITER</div>
+        </div>
     </div>
-<div>
-  <h1 class="restaurant-title" id="restaurantName">Restaurant AI</h1>
-  <div class="online-status">
-    <i class="bi bi-circle-fill me-1"></i>
-    AI Assistant
-  </div>
-</div>
-<div class="chat-info">
-  <div>Restaurant Vector ID</div>
-  <div id="restaurantId">Loading...</div>
-</div>
-  </header>
-  <main class="chat-body" id="chatBody">
-<div class="message-row bot">
-  <div>
-    <div class="message" id="welcomeMessage">
-      Hello! Welcome. How can I help you with our restaurant menu?
+    <div class="hero">
+        <div class="eyebrow">Benvenuti</div>
+        <h1>Good food.<br>Good mood.</h1>
+        <p id="heroDescription">
+            Discover our menu.
+            Our AI waiter is here to help
+            you explore our dishes and find
+            something delicious.
+        </p>
     </div>
-    <div class="message-time">AI Assistant</div>
-  </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-heading">HOW I CAN HELP</div>
+    <div class="feature">
+        <div class="feature-icon">🍕</div>
+        <div>
+            <strong>Explore our menu</strong>
+            <p>Discover available dishes.</p>
+        </div>
+    </div>
+    <div class="feature">
+        <div class="feature-icon">€</div>
+        <div>
+            <strong>Check food prices</strong>
+            <p>Find prices from our menu.</p>
+        </div>
+    </div>
+    <div class="feature">
+        <div class="feature-icon">🥗</div>
+        <div>
+            <strong>Find your favourite</strong>
+            <p>Ask about ingredients and options.</p>
+        </div>
+    </div>
+    <div class="sidebar-bottom">
+        <div class="online-badge">
+            <span class="online-dot"></span>
+            AI Waiter Online
+        </div>
+    </div>
+</aside>
+<main class="chat-area">
+    <header class="header">
+        <div class="restaurant-info">
+            <div class="restaurant-icon">🍽️</div>
+            <div>
+                <div class="restaurant-name" id="headerRestaurantName">
+                    Restaurant
+                </div>
+                <div class="restaurant-status">
+                    <span class="status-dot">●</span>
+                    Your AI Waiter
+                </div>
+            </div>
+        </div>
+        <div class="ai-label">AI ASSISTANT</div>
+    </header>
+    <div class="messages" id="messages">
+        <div class="date-label" id="dateLabel">TODAY</div>
+        <div class="message-row">
+            <div class="avatar">🍽️</div>
+            <div class="message-content">
+                <div class="sender" id="welcomeSender">
+                    Restaurant · AI Waiter
+                </div>
+                <div class="bubble" id="welcomeMessage">
+                    Hello! 👋 Welcome!
+                    I'm your AI waiter. I can help you explore our menu, check food prices and answer questions about our dishes.
+                    What would you like to know today?
+                </div>
+                <div class="time">Just now</div>
+            </div>
+        </div>
+    </div>
+    <section class="suggestions">
+        <div class="suggestion-title">TRY ASKING</div>
+        <div class="suggestion-list">
+            <button class="suggestion"
+                data-question="What dishes are available in your menu?">
+                🍕 Explore menu
+            </button>
+            <button class="suggestion"
+                data-question="What are your pizza prices?">
+                💶 Food prices
+            </button>
+            <button class="suggestion"
+                data-question="Do you have vegetarian options?">
+                🥗 Vegetarian
+            </button>
+            <button class="suggestion"
+                data-question="Quali piatti avete nel menu?">
+                🇮🇹 Italiano
+            </button>
+            <button class="suggestion"
+                data-question="তোমাদের মেনুতে কী কী খাবার আছে?">
+                🇧🇩 বাংলা
+            </button>
+        </div>
+    </section>
+    <footer class="input-area">
+        <form class="input-box" id="chatForm">
+            <textarea
+                id="question"
+                placeholder="Ask anything about our menu..."
+                rows="1"
+                maxlength="2000"
+                enterkeyhint="send"
+                required></textarea>
+            <button
+                class="send-btn"
+                id="sendBtn"
+                type="submit">
+                ➤
+            </button>
+        </form>
+        <div class="footer-note" id="footerNote">
+            Powered by Restaurant AI · Please confirm important details with our staff.
+        </div>
+    </footer>
+</main>
 </div>
-  </main>
-  <footer class="chat-footer">
-<div id="errorBox" class="error-message" style="display:none;"></div>
-<form id="chatForm">
-  <div class="input-group">
-    <input
-      type="text"
-      id="questionInput"
-      class="form-control"
-      placeholder="Ask something about the menu..."
-      autocomplete="off"
-      required
-    >
-    <button type="submit" class="send-btn" id="sendBtn">
-      <i class="bi bi-send-fill"></i>
-    </button>
-  </div>
-</form>
-<div class="footer-note">
-  Powered by Restaurant AI
-</div>
-  </footer>
 </div>
 <script>
-  // Read restaurant information from URL.
-  const params = new URLSearchParams(window.location.search);
-  const restaurantId = params.get("restaurant_id");
-  const restaurantName = params.get("restaurant_name") || "Restaurant AI";
-  const apiUrl = (params.get("api") || "https://restaurant-ai-waiter-api.onrender.com")
+/* =================================
+   RESTAURANT CONFIGURATION
+================================= */
+// Read information from the URL generated by index.html.
+const params = new URLSearchParams(window.location.search);
+const RESTAURANT_ID = params.get("restaurant_id");
+const RESTAURANT_NAME =
+    params.get("restaurant_name") || "Restaurant";
+const API_BASE_URL =
+    (params.get("api") || "https://restaurant-ai-waiter-api.onrender.com")
     .replace(/\/+$/, "");
-  const restaurantNameElement = document.getElementById("restaurantName");
-  const restaurantIdElement = document.getElementById("restaurantId");
-  const chatBody = document.getElementById("chatBody");
-  const chatForm = document.getElementById("chatForm");
-  const questionInput = document.getElementById("questionInput");
-  const sendBtn = document.getElementById("sendBtn");
-  const errorBox = document.getElementById("errorBox");
-  restaurantNameElement.textContent = restaurantName;
-  restaurantIdElement.textContent = restaurantId || "Not provided";
-  document.title = restaurantName + " — AI Chatbot";
-  // Prevent chatbot use if restaurant ID is missing.
-  if (!restaurantId) {
-    questionInput.disabled = true;
+// Correct API endpoint for this restaurant's vector namespace.
+const API_URL = RESTAURANT_ID
+    ? API_BASE_URL + "/api/chat/" + encodeURIComponent(RESTAURANT_ID)
+    : null;
+/* =================================
+   DYNAMIC RESTAURANT INFORMATION
+================================= */
+document.title = RESTAURANT_NAME + " | AI Waiter";
+document.getElementById("sidebarRestaurantName").textContent =
+    RESTAURANT_NAME;
+document.getElementById("headerRestaurantName").textContent =
+    RESTAURANT_NAME;
+document.getElementById("welcomeSender").textContent =
+    RESTAURANT_NAME + " · AI Waiter";
+document.getElementById("welcomeMessage").textContent =
+    "Ciao! 👋 Welcome to " + RESTAURANT_NAME + "!\n\n" +
+    "I'm your AI waiter. I can help you explore our menu, " +
+    "check food prices and answer questions about our dishes.\n\n" +
+    "What would you like to know today?";
+document.getElementById("heroDescription").textContent =
+    "Welcome to " + RESTAURANT_NAME + ". " +
+    "Our AI waiter is here to help you explore our menu " +
+    "and find something delicious.";
+document.getElementById("footerNote").textContent =
+    "Powered by " + RESTAURANT_NAME +
+    " AI · Please confirm important details with our staff.";
+/* =================================
+   ELEMENTS
+================================= */
+const app = document.getElementById("app");
+const messages = document.getElementById("messages");
+const form = document.getElementById("chatForm");
+const input = document.getElementById("question");
+const sendBtn = document.getElementById("sendBtn");
+/* =================================
+   VALIDATE RESTAURANT ID
+================================= */
+if (!RESTAURANT_ID) {
+    input.disabled = true;
     sendBtn.disabled = true;
-    showError("Restaurant ID is missing. Please open the chatbot from the upload dashboard.");
-  }
-  function getTime() {
-    return new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit"
+    input.placeholder = "Restaurant information is missing";
+    document.getElementById("welcomeMessage").textContent =
+        "Chatbot configuration error. Restaurant ID is missing. " +
+        "Please open this chatbot using the URL generated by the dashboard.";
+}
+/* =================================
+   MOBILE VIEWPORT FIX
+================================= */
+if (window.visualViewport) {
+    const viewport = window.visualViewport;
+    function updateViewport() {
+        if (window.innerWidth <= 600) {
+            app.style.height = viewport.height + "px";
+            app.style.position = "fixed";
+            app.style.top = viewport.offsetTop + "px";
+            app.style.left = "0";
+            app.style.right = "0";
+        } else {
+            app.style.height = "";
+            app.style.position = "";
+            app.style.top = "";
+        }
+    }
+    viewport.addEventListener("resize", updateViewport);
+    viewport.addEventListener("scroll", updateViewport);
+    window.addEventListener("resize", updateViewport);
+    updateViewport();
+}
+/* =================================
+   SCROLL CHAT TO BOTTOM
+================================= */
+function scrollToBottom() {
+    requestAnimationFrame(() => {
+        messages.scrollTop = messages.scrollHeight;
     });
-  }
-  function addMessage(text, sender) {
+}
+/* =================================
+   TIME
+================================= */
+function getTime() {
+    return new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+}
+/* =================================
+   ADD MESSAGE
+================================= */
+function addMessage(text, sender, isError = false) {
     const row = document.createElement("div");
-    row.className = "message-row " + sender;
-    const wrapper = document.createElement("div");
+    row.className = "message-row";
+    if (sender === "user") {
+        row.classList.add("user");
+    }
+    if (sender !== "user") {
+        const avatar = document.createElement("div");
+        avatar.className = "avatar";
+        avatar.textContent = "🍽️";
+        row.appendChild(avatar);
+    }
+    const content = document.createElement("div");
+    content.className = "message-content";
+    if (sender !== "user") {
+        const senderName = document.createElement("div");
+        senderName.className = "sender";
+        senderName.textContent = RESTAURANT_NAME + " · AI Waiter";
+        content.appendChild(senderName);
+    }
     const bubble = document.createElement("div");
-    bubble.className = "message";
+    bubble.className = "bubble";
     bubble.textContent = text;
+    if (isError) {
+        bubble.style.color = "#b54747";
+    }
+    content.appendChild(bubble);
     const time = document.createElement("div");
-    time.className = "message-time";
-    time.textContent = sender === "user" ? "You · " + getTime() : "AI Assistant · " + getTime();
-    wrapper.appendChild(bubble);
-    wrapper.appendChild(time);
-    row.appendChild(wrapper);
-    chatBody.appendChild(row);
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
-  function showError(message) {
-    errorBox.textContent = message;
-    errorBox.style.display = "block";
-  }
-  function hideError() {
-    errorBox.style.display = "none";
-  }
-  function showTyping() {
-    const typing = document.createElement("div");
-    typing.id = "typingIndicator";
-    typing.className = "typing";
-    typing.textContent = restaurantName + " AI is typing...";
-    chatBody.appendChild(typing);
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
-  function removeTyping() {
-    const typing = document.getElementById("typingIndicator");
-    if (typing) typing.remove();
-  }
-  function getAnswer(data) {
-    // Supports common API response formats.
-    if (typeof data === "string") return data;
-    return (
-      data.answer ||
-      data.response ||
-      data.message ||
-      data.reply ||
-      data.result ||
-      data.ai_response ||
-      "I couldn't find an answer. Please try another question."
-    );
-  }
-  chatForm.addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const question = questionInput.value.trim();
-    if (!question || !restaurantId) return;
-    hideError();
+    time.className = "time";
+    time.textContent = getTime();
+    content.appendChild(time);
+    row.appendChild(content);
+    messages.appendChild(row);
+    scrollToBottom();
+}
+/* =================================
+   TYPING INDICATOR
+================================= */
+function showTyping() {
+    const row = document.createElement("div");
+    row.className = "message-row";
+    row.id = "typing";
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.textContent = "🍽️";
+    const content = document.createElement("div");
+    content.className = "message-content";
+    const sender = document.createElement("div");
+    sender.className = "sender";
+    sender.textContent = RESTAURANT_NAME + " · AI Waiter";
+    const bubble = document.createElement("div");
+    bubble.className = "bubble typing-bubble";
+    for (let i = 0; i < 3; i++) {
+        const dot = document.createElement("span");
+        bubble.appendChild(dot);
+    }
+    content.appendChild(sender);
+    content.appendChild(bubble);
+    row.appendChild(avatar);
+    row.appendChild(content);
+    messages.appendChild(row);
+    scrollToBottom();
+}
+function removeTyping() {
+    document.getElementById("typing")?.remove();
+}
+/* =================================
+   API REQUEST
+================================= */
+async function sendMessage(question) {
+    question = question.trim();
+    if (!question || sendBtn.disabled) {
+        return;
+    }
+    if (!RESTAURANT_ID || !API_URL) {
+        addMessage(
+            "Restaurant ID is missing. Please open the correct restaurant chatbot.",
+            "bot",
+            true
+        );
+        return;
+    }
     addMessage(question, "user");
-    questionInput.value = "";
-    questionInput.disabled = true;
+    input.value = "";
+    input.style.height = "40px";
     sendBtn.disabled = true;
     showTyping();
+    const controller = new AbortController();
+    const timeout = setTimeout(() => {
+        controller.abort();
+    }, 90000);
     try {
-      const response = await fetch(
-        apiUrl + "/api/chat/" + encodeURIComponent(restaurantId),
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            question: question
-          })
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                question: question
+            }),
+            signal: controller.signal
+        });
+        const data = await response.json();
+        removeTyping();
+        if (!response.ok) {
+            const detail = data.detail;
+            throw new Error(
+                typeof detail === "string"
+                    ? detail
+                    : "The server could not process your request."
+            );
         }
-      );
-      const data = await response.json();
-      removeTyping();
-      if (!response.ok) {
-        throw new Error(
-          data.detail || data.message || "Chat API request failed."
-        );
-      }
-      const answer = getAnswer(data);
-      addMessage(String(answer), "bot");
+        // Current API returns data.answer.
+        const answer =
+            data.answer ||
+            data.response ||
+            data.message ||
+            data.reply;
+        if (!answer) {
+            throw new Error("The AI returned an empty response.");
+        }
+        addMessage(answer, "bot");
     } catch (error) {
-      removeTyping();
-      showError(error.message || "Unable to connect to the chatbot.");
+        removeTyping();
+        let errorMessage;
+        if (error.name === "AbortError") {
+            errorMessage =
+                "The server is taking too long to respond. Please try again.";
+        } else if (
+            error.message.toLowerCase().includes("failed to fetch")
+        ) {
+            errorMessage =
+                "Unable to connect to the server. Please check your internet connection.";
+        } else {
+            errorMessage = error.message;
+        }
+        addMessage(errorMessage, "bot", true);
     } finally {
-      questionInput.disabled = false;
-      sendBtn.disabled = false;
-      questionInput.focus();
+        clearTimeout(timeout);
+        sendBtn.disabled = false;
     }
-  });
+}
+/* =================================
+   FORM SUBMISSION
+================================= */
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+    sendMessage(input.value);
+});
+/* =================================
+   KEYBOARD
+================================= */
+input.addEventListener("keydown", function(event) {
+    if (
+        event.key === "Enter" &&
+        !event.shiftKey &&
+        !event.isComposing
+    ) {
+        event.preventDefault();
+        form.requestSubmit();
+    }
+});
+/* =================================
+   AUTO RESIZE INPUT
+================================= */
+input.addEventListener("input", function() {
+    input.style.height = "40px";
+    input.style.height =
+        Math.min(input.scrollHeight, 110) + "px";
+});
+/* =================================
+   QUICK QUESTIONS
+================================= */
+document.querySelectorAll(".suggestion").forEach(button => {
+    button.addEventListener("click", function() {
+        sendMessage(this.dataset.question);
+    });
+});
+/* =================================
+   INITIALIZE
+================================= */
+window.addEventListener("load", scrollToBottom);
 </script>
 </body>
 </html>
